@@ -18,17 +18,59 @@ class ReactAgent:
             middleware=[],
         )
 
+    @staticmethod
+    def _extract_text(content) -> str:
+        if isinstance(content, str):
+            return content
+
+        if isinstance(content, list):
+            parts: list[str] = []
+            for block in content:
+                if isinstance(block, str):
+                    parts.append(block)
+                    continue
+
+                if isinstance(block, dict):
+                    text = block.get("text")
+                    if isinstance(text, str):
+                        parts.append(text)
+                    continue
+
+                text = getattr(block, "text", None)
+                if isinstance(text, str):
+                    parts.append(text)
+
+            return "".join(parts)
+
+        return ""
+
     async def execute_stream(self, messages: list[dict[str, str]]):
         input_dict = {"messages": messages}
+        last_full_text = ""
 
         async for chunk in self.agent.astream(input_dict, stream_mode="values"):
-            latest_message = chunk["messages"][-1]
-            content = latest_message.content
+            all_messages = chunk.get("messages") or []
+            if not all_messages:
+                continue
+
+            latest_message = all_messages[-1]
             msg_type = getattr(latest_message, "type", None)
             if msg_type not in {"ai", "assistant"}:
                 continue
-            if isinstance(content, str) and content:
-                yield content
+
+            full_text = self._extract_text(getattr(latest_message, "content", ""))
+            if not full_text:
+                continue
+
+            if full_text.startswith(last_full_text):
+                delta = full_text[len(last_full_text):]
+            else:
+                delta = full_text
+
+            last_full_text = full_text
+            if delta:
+                yield delta
+
 
 if __name__ == '__main__':
     agent = ReactAgent()

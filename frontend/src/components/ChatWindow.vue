@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue';
+import { ref, reactive, watch, nextTick, onMounted, onUnmounted } from 'vue';
 import { Send, MapPin, Loader2 } from 'lucide-vue-next';
 import MessageBubble from './MessageBubble.vue';
 import InputArea from './InputArea.vue';
@@ -58,11 +58,11 @@ const handleSendMessage = async (text) => {
   isGenerating.value = true;
   
   // Create placeholder for assistant message
-  const assistantMessage = {
+  const assistantMessage = reactive({
     role: 'assistant',
     content: '',
     created_at: new Date().toISOString()
-  };
+  });
   messages.value.push(assistantMessage);
 
   try {
@@ -83,6 +83,7 @@ const handleSendMessage = async (text) => {
       if (data === '[DONE]') {
         console.log('Stream finished [DONE]');
         eventSource.close();
+        currentEventSource.value = null;
         isGenerating.value = false;
         // 触发标题更新事件
         emit('update-title');
@@ -90,6 +91,7 @@ const handleSendMessage = async (text) => {
         console.error('Stream error:', data);
         assistantMessage.error = data.slice(7);
         eventSource.close();
+        currentEventSource.value = null;
         isGenerating.value = false;
       } else {
         assistantMessage.content += data;
@@ -100,6 +102,7 @@ const handleSendMessage = async (text) => {
     eventSource.onerror = (error) => {
       console.error('EventSource failed:', error);
       eventSource.close();
+      currentEventSource.value = null;
       isGenerating.value = false;
       if (!assistantMessage.content && !assistantMessage.error) {
         assistantMessage.error = 'Connection failed or stream ended unexpectedly.';

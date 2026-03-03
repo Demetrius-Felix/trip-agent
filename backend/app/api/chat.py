@@ -40,20 +40,22 @@ async def chat_stream(
     if not exists:
         raise HTTPException(status_code=404, detail="Session not found")
 
+    def format_sse(data: str) -> str:
+        text = str(data)
+        lines = text.split("\n")
+        return "".join([f"data: {line}\n" for line in lines]) + "\n"
+
     async def event_generator():
-        yield "data: connected\n\n"  # 立即推送一个包
-        async for chunk in chat_service.chat_stream(
-                db,
-                session_id,
-                query,
-        ):
-            text = str(chunk)
-            lines = text.splitlines()
-            if not lines:
-                lines = [""]
-            for line in lines:
-                yield f"data: {line}\n"
-            yield "\n"
+        yield ": connected\n\n"
+        try:
+            async for chunk in chat_service.chat_stream(
+                    db,
+                    session_id,
+                    query,
+            ):
+                yield format_sse(chunk)
+        except Exception as e:
+            yield format_sse(f"[ERROR]{str(e)}")
 
     return StreamingResponse(
         event_generator(),

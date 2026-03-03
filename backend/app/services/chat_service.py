@@ -130,20 +130,26 @@ class ChatService:
                 messages.append({"role": msg.role, "content": msg.content})
         messages.append({"role": "user", "content": user_input})
 
-        async for chunk in self.agent.execute_stream(messages):
-            if not chunk:
-                continue
-            assistant_full_text += chunk
-            yield chunk
-            await asyncio.sleep(0)
+        try:
+            async for chunk in self.agent.execute_stream(messages):
+                if not chunk:
+                    continue
+                assistant_full_text += chunk
+                yield chunk
+                await asyncio.sleep(0)
+        except Exception as e:
+            yield f"[ERROR]{str(e)}"
+            return
 
         # 4️⃣ 保存 assistant 完整回复
-        await self.save_message(
-            db,
-            session_id,
-            "assistant",
-            assistant_full_text.strip(),
-        )
+        final_text = assistant_full_text.strip()
+        if final_text:
+            await self.save_message(
+                db,
+                session_id,
+                "assistant",
+                final_text,
+            )
 
         yield "[DONE]"
 
