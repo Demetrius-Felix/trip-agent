@@ -1,0 +1,5 @@
+2026-03-03 13:54:28,430 - agent - INFO -vector_store.py:77 - [加载知识库]E:\PythonCode\trip-agent\data\上海旅游.txt内容已经存在于知识库内, 跳过
+2026-03-03 13:54:28,431 - agent - INFO -vector_store.py:77 - [加载知识库]E:\PythonCode\trip-agent\data\北京旅游.txt内容已经存在于知识库内, 跳过
+2026-03-03 13:54:28,431 - agent - INFO -vector_store.py:77 - [加载知识库]E:\PythonCode\trip-agent\data\成都旅游.txt内容已经存在于知识库内, 跳过
+2026-03-03 13:54:28,432 - agent - INFO -vector_store.py:77 - [加载知识库]E:\PythonCode\trip-agent\data\杭州旅游.txt内容已经存在于知识库内, 跳过
+2026-03-03 13:54:28,432 - agent - INFO -vector_store.py:77 - [加载知识库]E:\PythonCode\trip-agent\data\西安旅游.txt内容已经存在于知识库内, 跳过

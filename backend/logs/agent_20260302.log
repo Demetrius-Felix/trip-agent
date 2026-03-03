@@ -1,0 +1,15 @@
+2026-03-02 18:32:08,396 - agent - INFO -vector_store.py:99 - [加载知识库]E:\PythonCode\trip-agent\data\beijing_knowledge.txt内容加载成功
+2026-03-02 18:32:09,325 - agent - INFO -vector_store.py:99 - [加载知识库]E:\PythonCode\trip-agent\data\chengdu_knowledge.txt内容加载成功
+2026-03-02 18:32:10,064 - agent - INFO -vector_store.py:99 - [加载知识库]E:\PythonCode\trip-agent\data\hangzhou_knowledge.txt内容加载成功
+2026-03-02 18:32:10,987 - agent - INFO -vector_store.py:99 - [加载知识库]E:\PythonCode\trip-agent\data\shanghai_knowledge.txt内容加载成功
+2026-03-02 18:32:11,770 - agent - INFO -vector_store.py:99 - [加载知识库]E:\PythonCode\trip-agent\data\xian_knowledge.txt内容加载成功
+2026-03-02 18:33:13,805 - agent - INFO -vector_store.py:77 - [加载知识库]E:\PythonCode\trip-agent\data\beijing_knowledge.txt内容已经存在于知识库内, 跳过
+2026-03-02 18:33:13,806 - agent - INFO -vector_store.py:77 - [加载知识库]E:\PythonCode\trip-agent\data\chengdu_knowledge.txt内容已经存在于知识库内, 跳过
+2026-03-02 18:33:13,806 - agent - INFO -vector_store.py:77 - [加载知识库]E:\PythonCode\trip-agent\data\hangzhou_knowledge.txt内容已经存在于知识库内, 跳过
+2026-03-02 18:33:13,807 - agent - INFO -vector_store.py:77 - [加载知识库]E:\PythonCode\trip-agent\data\shanghai_knowledge.txt内容已经存在于知识库内, 跳过
+2026-03-02 18:33:13,807 - agent - INFO -vector_store.py:77 - [加载知识库]E:\PythonCode\trip-agent\data\xian_knowledge.txt内容已经存在于知识库内, 跳过
+2026-03-02 19:06:57,802 - agent - INFO -vector_store.py:77 - [加载知识库]E:\PythonCode\trip-agent\data\上海旅游.txt内容已经存在于知识库内, 跳过
+2026-03-02 19:06:57,803 - agent - INFO -vector_store.py:77 - [加载知识库]E:\PythonCode\trip-agent\data\北京旅游.txt内容已经存在于知识库内, 跳过
+2026-03-02 19:06:57,803 - agent - INFO -vector_store.py:77 - [加载知识库]E:\PythonCode\trip-agent\data\成都旅游.txt内容已经存在于知识库内, 跳过
+2026-03-02 19:06:57,804 - agent - INFO -vector_store.py:77 - [加载知识库]E:\PythonCode\trip-agent\data\杭州旅游.txt内容已经存在于知识库内, 跳过
+2026-03-02 19:06:57,804 - agent - INFO -vector_store.py:77 - [加载知识库]E:\PythonCode\trip-agent\data\西安旅游.txt内容已经存在于知识库内, 跳过
