@@ -5,8 +5,10 @@ import traceback
 import sys
 import os
 
-# 导入 models 确保 SQLAlchemy 注册所有模型
-from models import User, Session, Message
+# 导入当前业务使用到的模型
+from models import Session, Message
+
+
 
 from app.api import chat
 
