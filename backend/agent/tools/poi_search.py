@@ -41,11 +41,15 @@ def search_poi(keyword: str, city: str) -> str:
         result = f"{city} 推荐的 {keyword}：\n\n"
 
         for i, poi in enumerate(pois, 1):
+            name = poi.get("name") or "未知地点"
+            address = poi.get("address") or "暂无地址"
+            poi_type = poi.get("type") or "未知类型"
             result += (
-                f"{i}. {poi['name']}\n"
-                f"地址: {poi['address']}\n"
-                f"类型: {poi['type']}\n\n"
+                f"{i}. {name}\n"
+                f"地址: {address}\n"
+                f"类型: {poi_type}\n\n"
             )
+
 
         return result
 

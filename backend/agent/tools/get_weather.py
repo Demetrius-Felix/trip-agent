@@ -35,15 +35,25 @@ def get_weather(city: str) -> str:
 
         weather = lives[0]
 
+        province = weather.get("province") or ""
+        city_name = weather.get("city") or city
+        weather_desc = weather.get("weather") or "未知"
+        temperature = weather.get("temperature") or "未知"
+        winddirection = weather.get("winddirection") or "未知"
+        windpower = weather.get("windpower") or "未知"
+        humidity = weather.get("humidity") or "未知"
+        reporttime = weather.get("reporttime") or "未知"
+
         result = (
-            f"{weather['province']} {weather['city']} 当前天气：\n"
-            f"天气状况：{weather['weather']}\n"
-            f"温度：{weather['temperature']}℃\n"
-            f"风向：{weather['winddirection']}\n"
-            f"风力：{weather['windpower']}级\n"
-            f"湿度：{weather['humidity']}%\n"
-            f"更新时间：{weather['reporttime']}"
+            f"{province} {city_name} 当前天气：\n"
+            f"天气状况：{weather_desc}\n"
+            f"温度：{temperature}℃\n"
+            f"风向：{winddirection}\n"
+            f"风力：{windpower}级\n"
+            f"湿度：{humidity}%\n"
+            f"更新时间：{reporttime}"
         )
+
 
         return result
 

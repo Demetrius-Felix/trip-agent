@@ -47,10 +47,16 @@ def route_plan(origin: str, destination: str, city: str) -> str:
     if data.get("status") != "1":
         return f"路线查询失败: {data.get('info')}"
 
-    route = data["route"]["paths"][0]
+    route_info = data.get("route") or {}
+    paths = route_info.get("paths") or []
+    if not paths:
+        return f"路线查询失败: {data.get('info') or '未返回路径数据'}"
 
-    distance = int(route["distance"]) / 1000
-    duration = int(route["duration"]) / 60
+    route = paths[0]
+
+    distance = int(route.get("distance") or 0) / 1000
+    duration = int(route.get("duration") or 0) / 60
+
 
     return (
         f"从 {origin} 到 {destination}：\n"
