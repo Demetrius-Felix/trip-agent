@@ -64,30 +64,41 @@ class ReactAgent:
     async def execute_stream(self, messages: list[dict[str, str]]):
         input_dict = {"messages": messages}
         last_full_text = ""
+        emitted = False
 
         try:
-            async for chunk in self.agent.astream(input_dict, stream_mode="values"):
-                all_messages = chunk.get("messages") or []
-                if not all_messages:
-                    continue
+            async with asyncio.timeout(45):
+                async for chunk in self.agent.astream(input_dict, stream_mode="values"):
+                    all_messages = chunk.get("messages") or []
+                    if not all_messages:
+                        continue
 
-                latest_message = all_messages[-1]
-                msg_type = getattr(latest_message, "type", None)
-                if msg_type not in {"ai", "assistant"}:
-                    continue
+                    latest_message = all_messages[-1]
+                    msg_type = getattr(latest_message, "type", None)
+                    if msg_type not in {"ai", "assistant"}:
+                        continue
 
-                full_text = self._extract_text(getattr(latest_message, "content", ""))
-                if not full_text:
-                    continue
+                    full_text = self._extract_text(getattr(latest_message, "content", ""))
+                    if not full_text:
+                        continue
 
-                if full_text.startswith(last_full_text):
-                    delta = full_text[len(last_full_text):]
-                else:
-                    delta = full_text
+                    if full_text.startswith(last_full_text):
+                        delta = full_text[len(last_full_text):]
+                    else:
+                        delta = full_text
 
-                last_full_text = full_text
-                if delta:
-                    yield delta
+                    last_full_text = full_text
+                    if delta:
+                        emitted = True
+                        yield delta
+        except TimeoutError:
+            fallback_messages = self._to_langchain_messages(messages)
+            async for chunk in chat_model.astream(fallback_messages):
+                text = self._extract_text(getattr(chunk, "content", ""))
+                if text:
+                    emitted = True
+                    yield text
+
         except KeyError as e:
             if str(e) != "'name'":
                 raise
@@ -96,7 +107,23 @@ class ReactAgent:
             async for chunk in chat_model.astream(fallback_messages):
                 text = self._extract_text(getattr(chunk, "content", ""))
                 if text:
+                    emitted = True
                     yield text
+        except Exception as e:
+            error_text = str(e)
+            if "function.arguments" not in error_text:
+                raise
+
+            fallback_messages = self._to_langchain_messages(messages)
+            async for chunk in chat_model.astream(fallback_messages):
+                text = self._extract_text(getattr(chunk, "content", ""))
+                if text:
+                    emitted = True
+                    yield text
+
+        if not emitted:
+            yield "我可以回答这个问题。请你再具体一点，我会直接给出可用答案。"
+
 
 
 

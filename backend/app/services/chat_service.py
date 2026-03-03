@@ -143,15 +143,19 @@ class ChatService:
 
         # 4️⃣ 保存 assistant 完整回复
         final_text = assistant_full_text.strip()
-        if final_text:
-            await self.save_message(
-                db,
-                session_id,
-                "assistant",
-                final_text,
-            )
+        if not final_text:
+            final_text = "我可以回答这个问题，但我刚才没有成功生成内容。请你重试一次，我会直接回答。"
+            yield final_text
+
+        await self.save_message(
+            db,
+            session_id,
+            "assistant",
+            final_text,
+        )
 
         yield "[DONE]"
+
 
     # ------------------------
     # 会话列表
