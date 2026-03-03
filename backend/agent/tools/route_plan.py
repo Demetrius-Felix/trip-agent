@@ -65,4 +65,4 @@ def route_plan(origin: str, destination: str, city: str) -> str:
     )
 
 if __name__ == '__main__':
-    print(route_plan("成都东站", "宽窄巷子", "成都"))
+    print(route_plan("王府井", "颐和园", "北京"))

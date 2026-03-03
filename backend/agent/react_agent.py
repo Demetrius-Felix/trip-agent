@@ -6,7 +6,6 @@ from agent.tools.get_current_datetime import get_current_datetime
 from agent.tools.get_weather import get_weather
 from agent.tools.poi_search import search_poi
 from agent.tools.route_plan import route_plan
-from agent.tools.web_search import web_search
 from models.factory import chat_model
 from utils.prompt_loader import load_system_prompt
 from agent.tools.rag_tool import rag_summarize
